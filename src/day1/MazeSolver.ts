@@ -1,3 +1,21 @@
+const dir = [
+    [0, 1], // y + 1 Up
+    [1, 0], // x + 1 Right
+    [0, -1], // y - 1 Down
+    [-1, 0], // x - 1 Left
+];
+
+/**
+ * Recursive implementation of Maze solver
+ * @param maze
+ * @param wall
+ * @param curr
+ * @param end
+ * @param seen
+ * @param path A point is only added if we succeed. If we fail, we remove the point from the array
+ * @returns true if it is a valid path (find the end)
+ */
+
 function walk(
     maze: string[],
     wall: string,
@@ -25,6 +43,7 @@ function walk(
     }
 
     if (curr.x == end.x && curr.y == end.y) {
+        // Other implementation path.push(end)
         return true;
     }
 
@@ -32,6 +51,12 @@ function walk(
         return false;
     }
 
+    // 3 Recurse
+    // pre
+    // recurse
+    // post
+
+    // Pre
     seen[curr.y][curr.x] = true;
     path.push(curr);
 
@@ -39,6 +64,27 @@ function walk(
     const right = { x: curr.x + 1, y: curr.y };
     const down = { x: curr.x, y: curr.y - 1 };
     const left = { x: curr.x - 1, y: curr.y };
+
+    // Recurse
+    // Other implementation:
+    // for (const element of dir) {
+    //     const [x, y] = element;
+    //     if (
+    //         walk(
+    //             maze,
+    //             wall,
+    //             {
+    //                 x: curr.x + x,
+    //                 y: curr.y + y,
+    //             },
+    //             end,
+    //             seen,
+    //             path,
+    //         )
+    //     ) {
+    //         return true;
+    //     }
+    // }
 
     if (walk(maze, wall, up, end, seen, path)) {
         path.push(up);
@@ -60,6 +106,7 @@ function walk(
         return true;
     }
 
+    // Post
     // No path led to the exit: we removed this cell
     path.pop();
     return false;
