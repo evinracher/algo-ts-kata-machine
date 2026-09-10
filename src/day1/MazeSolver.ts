@@ -13,31 +13,31 @@ function walk(
     // 4. Seen cell
     if (
         curr.x < 0 ||
-        curr.x >= maze.length ||
+        curr.x >= maze[0].length ||
         curr.y < 0 ||
-        curr.y >= maze[0].length
+        curr.y >= maze.length
     ) {
         return false;
     }
 
-    if (maze[curr.x][curr.y] === wall) {
+    if (maze[curr.y][curr.x] === wall) {
         return false;
     }
 
-    if (curr == end) {
+    if (curr.x == end.x && curr.y == end.y) {
         return true;
     }
 
-    if (seen[curr.x][curr.y]) {
+    if (seen[curr.y][curr.x]) {
         return false;
     }
 
-    seen[curr.x][curr.y] = true;
+    seen[curr.y][curr.x] = true;
 
     const up = { x: curr.x, y: curr.y + 1 };
     const right = { x: curr.x + 1, y: curr.y };
     const down = { x: curr.x, y: curr.y - 1 };
-    const left = { x: curr.x - 1, y: curr.y + 1 };
+    const left = { x: curr.x - 1, y: curr.y };
 
     const resultUp = walk(maze, wall, up, end, seen, path);
     const resultRight = walk(maze, wall, right, end, seen, path);
@@ -73,10 +73,12 @@ export default function solve(
     start: Point,
     end: Point,
 ): Point[] {
-  const path: Point[] = [];
-  const seen: boolean[][] = [];
-
-  walk(maze, wall, start, end, seen, path)
-  
-  return path;
+    const path: Point[] = [];
+    const seen: boolean[][] = maze.map((row) =>
+        new Array<boolean>(row.length).fill(false),
+    );
+    
+    path.push(start)
+    walk(maze, wall, start, end, seen, path);
+    return path;
 }
