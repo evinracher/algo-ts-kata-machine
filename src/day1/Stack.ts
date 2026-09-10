@@ -42,3 +42,5 @@ export default class Stack<T> {
         return this.head?.value;
     }
 }
+
+
