@@ -33,6 +33,7 @@ function walk(
     }
 
     seen[curr.y][curr.x] = true;
+    path.push(curr);
 
     const up = { x: curr.x, y: curr.y + 1 };
     const right = { x: curr.x + 1, y: curr.y };
@@ -59,6 +60,8 @@ function walk(
         return true;
     }
 
+    // No path led to the exit: we removed this cell
+    path.pop();
     return false;
 }
 
@@ -73,10 +76,6 @@ export default function solve(
         new Array<boolean>(row.length).fill(false),
     );
 
-    if (!walk(maze, wall, start, end, seen, path)) {
-        return [];
-    }
-
-    path.push(start);
-    return path.reverse();
+    walk(maze, wall, start, end, seen, path);
+    return path;
 }
