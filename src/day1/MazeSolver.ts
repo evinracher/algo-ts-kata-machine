@@ -39,27 +39,22 @@ function walk(
     const down = { x: curr.x, y: curr.y - 1 };
     const left = { x: curr.x - 1, y: curr.y };
 
-    const resultUp = walk(maze, wall, up, end, seen, path);
-    const resultRight = walk(maze, wall, right, end, seen, path);
-    const resultDown = walk(maze, wall, down, end, seen, path);
-    const resultLeft = walk(maze, wall, left, end, seen, path);
-
-    if (resultUp) {
+    if (walk(maze, wall, up, end, seen, path)) {
         path.push(up);
         return true;
     }
 
-    if (resultRight) {
+    if (walk(maze, wall, right, end, seen, path)) {
         path.push(right);
         return true;
     }
 
-    if (resultDown) {
+    if (walk(maze, wall, down, end, seen, path)) {
         path.push(down);
         return true;
     }
 
-    if (resultLeft) {
+    if (walk(maze, wall, left, end, seen, path)) {
         path.push(left);
         return true;
     }
@@ -77,8 +72,11 @@ export default function solve(
     const seen: boolean[][] = maze.map((row) =>
         new Array<boolean>(row.length).fill(false),
     );
-    
-    path.push(start)
-    walk(maze, wall, start, end, seen, path);
-    return path;
+
+    if (!walk(maze, wall, start, end, seen, path)) {
+        return [];
+    }
+
+    path.push(start);
+    return path.reverse();
 }
