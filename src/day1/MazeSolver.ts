@@ -76,6 +76,7 @@ export default function solve(
         new Array<boolean>(row.length).fill(false),
     );
 
+    // In order
     walk(maze, wall, start, end, seen, path);
     return path;
 }
